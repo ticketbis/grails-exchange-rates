@@ -1,0 +1,24 @@
+<plugin name='exchange-rates' version='1.0'>
+  <author>Paul Fernley</author>
+  <authorEmail>paul@pfernley.orangehome.co.uk</authorEmail>
+  <title>Foreign currency exchange rates using Yahoo!</title>
+  <description>The exchange-rates plugin will either retrieve foreign currency exchange rates
+dynamically from Yahoo! or can store rates in the database on a day-by-day,
+currency-by-currency basis retrieving the rate from Yahoo! the first time each
+day that a conversion is requested for a given currency. A full set of CRUD
+screens is included together with a cache statistics screen (at a URL such as
+http://myServer/myApp/exchangeRate/cache) and a test screen for checking that
+the system is working (at a URL such as http://myServer/myApp/exchangeRate/test).
+The screens assume you are using a layout called main. Your application must
+have Internet access for the exchange-rates plugin to function.
+</description>
+  <documentation>http://grails.org/ExchangeRates+Plugin</documentation>
+  <resources>
+    <resource>ExchangeCurrencyController</resource>
+    <resource>ExchangeRateController</resource>
+    <resource>ExchangeCurrency</resource>
+    <resource>ExchangeRate</resource>
+    <resource>ExchangeRateService</resource>
+    <resource>ExchangeRateTagLib</resource>
+  </resources>
+</plugin>
