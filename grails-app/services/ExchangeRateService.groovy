@@ -278,7 +278,7 @@ class ExchangeRateService {
             def cur = ExchangeCurrency.get(map.id)
 
             // Double check no one has modified it behind our back
-            if (cur && cur.lastAutoCheck == null || cur.lastAutoCheck.before(today)) {
+            if (cur && (cur.lastAutoCheck == null || cur.lastAutoCheck.before(today))) {
                 cur.lastAutoCheck = today
                 cur.lastAutoSucceeded = false
                 if (cur.save()) {
