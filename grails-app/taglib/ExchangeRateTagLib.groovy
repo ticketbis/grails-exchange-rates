@@ -1,3 +1,5 @@
+import org.grails.plugins.exchangerates.*
+
 class ExchangeRateTagLib {
 
     def exchangeRateService
@@ -11,7 +13,7 @@ class ExchangeRateTagLib {
             out << '</span>'
         }
     }
-    
+
     def exchangeRateHelpBalloons = {attrs, body ->
         if (exchangeRateService.hasPlugin("helpBalloons")) {
             out << g.helpBalloons(attrs)
@@ -48,7 +50,7 @@ class ExchangeRateTagLib {
         def count = (exchangeRateService.hasPlugin("criteria") || exchangeRateService.hasPlugin("drilldowns")) ? ExchangeCurrency.selectCount(session, params) : ExchangeCurrency.count()
         out << g.paginate(total: count)
     }
-    
+
     def exchangeRatePaginate = {attrs, body ->
         def count = (exchangeRateService.hasPlugin("criteria") || exchangeRateService.hasPlugin("drilldowns")) ? ExchangeRate.selectCount(session, params) : ExchangeRate.count()
         out << g.paginate(total: count)

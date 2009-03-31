@@ -1,5 +1,5 @@
 class ExchangeRatesGrailsPlugin {
-    def version = 1.1
+    def version = 1.2
     def dependsOn = [:]
 
     // TODO Fill in these fields
@@ -24,19 +24,19 @@ have Internet access for the exchange-rates plugin to function.
     def doWithSpring = {
         // TODO Implement runtime spring config (optional)
     }
-   
+
     def doWithApplicationContext = { applicationContext ->
-        // TODO Implement post initialization spring config (optional)		
+        // TODO Implement post initialization spring config (optional)
     }
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional)
     }
-	                                      
+
     def doWithDynamicMethods = { ctx ->
         // TODO Implement registering dynamic methods to classes (optional)
     }
-	
+
     def onChange = { event ->
         // TODO Implement code that is executed when any artefact that this plugin is
         // watching is modified and reloaded. The event contains: event.source,

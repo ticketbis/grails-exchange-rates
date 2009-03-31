@@ -1,4 +1,5 @@
-                <div class="dialog">
+<%@ page import="org.grails.plugins.exchangerates.ExchangeCurrency" %>
+<div class="dialog">
                     <table>
                         <tbody>
 
