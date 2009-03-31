@@ -1,4 +1,4 @@
-<plugin name='exchange-rates' version='1.2' grailsVersion='1.1 &gt; *'>
+<plugin name='exchange-rates' version='1.3' grailsVersion='1.1 &gt; *'>
   <author>Paul Fernley</author>
   <authorEmail>paul@pfernley.orangehome.co.uk</authorEmail>
   <title>Foreign currency exchange rates using Yahoo!</title>
@@ -15,10 +15,15 @@ have Internet access for the exchange-rates plugin to function.
   <documentation>http://grails.org/ExchangeRates+Plugin</documentation>
   <resources>
     <resource>UrlMappings</resource>
+    <resource>ExchangeCurrencyController</resource>
+    <resource>ExchangeRateController</resource>
     <resource>org.grails.plugins.exchangerates.ExchangeCurrencyController</resource>
     <resource>org.grails.plugins.exchangerates.ExchangeRateController</resource>
+    <resource>ExchangeCurrency</resource>
+    <resource>ExchangeRate</resource>
     <resource>org.grails.plugins.exchangerates.ExchangeCurrency</resource>
     <resource>org.grails.plugins.exchangerates.ExchangeRate</resource>
+    <resource>ExchangeRateService</resource>
     <resource>org.grails.plugins.exchangerates.ExchangeRateService</resource>
     <resource>ExchangeRateTagLib</resource>
   </resources>

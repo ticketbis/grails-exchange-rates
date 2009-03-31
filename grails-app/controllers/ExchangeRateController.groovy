@@ -7,11 +7,11 @@ class ExchangeRateController {
     private static loaded = false
 
     def exchangeRateService
-    
+
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST', reset:'POST', convert:'POST']
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST', reset:'POST', convert:'POST']
 
     def list = {
         if (!loaded) {
@@ -160,7 +160,7 @@ class ExchangeRateController {
         if (cur && cur.code != exchangeRateService.baseCurrencyCode()) {
             exchangeRateInstance.currency = cur.code
         }
-        
+
         return ['exchangeRateInstance':exchangeRateInstance]
     }
 
@@ -321,7 +321,7 @@ class ExchangeRateController {
                 testDataInstance.dynamicResult = exchangeRateService.round(testDataInstance.amount * testDataInstance.dynamicRate, toDecs)
             }
         }
-        
+
         render(view:'test',model:[testDataInstance:testDataInstance])
     }
 }

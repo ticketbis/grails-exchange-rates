@@ -7,11 +7,11 @@ class ExchangeCurrencyController {
     private static loaded = false
 
     def exchangeRateService
-    
+
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
         if (!loaded) {
@@ -132,7 +132,7 @@ class ExchangeCurrencyController {
             }
 
             if (valid) valid = exchangeCurrencyInstance.save()
-            
+
             if (valid) {
                 exchangeRateService.resetCurrency(oldCode)
                 if (exchangeCurrencyInstance.code != oldCode) exchangeRateService.resetCurrency(exchangeCurrencyInstance.code)
