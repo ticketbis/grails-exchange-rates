@@ -1,3 +1,5 @@
+package org.grails.plugins.exchangerates
+
 import org.grails.plugins.exchangerates.*
 
 class ExchangeRateTagLib {
@@ -60,5 +62,12 @@ class ExchangeRateTagLib {
         if (exchangeRateService.hasPlugin("drilldowns")) {
             out << g.drilldownReturn(attrs)
         }
+    }
+
+    def exchangeRateResource = {attrs, body ->
+        def uri = grailsAttributes.getApplicationUri(request)
+        if (attrs.dir) uri = uri + '/' + attrs.dir
+        if (attrs.file) uri = uri + '/' + attrs.file
+        out << uri
     }
 }

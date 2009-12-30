@@ -1,5 +1,5 @@
 class ExchangeRatesGrailsPlugin {
-    def version = 1.6
+    def version = 1.7
     def dependsOn = [:]
 
     // TODO Fill in these fields

@@ -1,6 +1,9 @@
+package org.grails.plugins.exchangerates
+
 import org.codehaus.groovy.grails.commons.GrailsDomainClass
 import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
 import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.grails.plugins.exchangerates.*
 
 class ExchangeCurrencyController {
 
@@ -38,7 +41,7 @@ class ExchangeCurrencyController {
 
             // This convolution is necessary because this plugin can't see the
             // domain classes of another plugin
-            def setting = ((GrailsDomainClass) ApplicationHolder.getApplication().getArtefact(DomainClassArtefactHandler.TYPE, "Setting")).newInstance()
+            def setting = ((GrailsDomainClass) ApplicationHolder.getApplication().getArtefact(DomainClassArtefactHandler.TYPE, "org.grails.plugins.settings.Setting")).newInstance()
             max = setting.valueFor("pagination.max", max)
             dflt = setting.valueFor("pagination.default", dflt)
         }

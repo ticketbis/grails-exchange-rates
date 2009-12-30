@@ -1,3 +1,5 @@
+package org.grails.plugins.exchangerates
+
 class TestData {
 	String fromCode
     String toCode

@@ -1,8 +1,10 @@
+package org.grails.plugins.exchangerates
+
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.codehaus.groovy.grails.commons.GrailsServiceClass
 import org.codehaus.groovy.grails.commons.ServiceArtefactHandler
 import org.codehaus.groovy.grails.commons.ApplicationHolder
-import java.math.MathContext
+import org.grails.plugins.exchangerates.*
 
 class ExchangeRateService {
 
@@ -26,7 +28,7 @@ class ExchangeRateService {
 
         // If the rate is unavailable or the currency record cannot be found, return null
         if (!rate || decs == null) return null
-        
+
         return round(value * rate, decs)
     }
 
@@ -77,7 +79,7 @@ class ExchangeRateService {
         }
 
         def result = "http://finance.yahoo.com/d/quotes.csv?s=${from}${to}=X&f=b".toURL().getText()?.trim()
-        
+
         try {
             return round(new BigDecimal(result), 6)
         } catch (NumberFormatException nfe) {}
@@ -142,7 +144,7 @@ class ExchangeRateService {
 
         return futureAllowed
     }
-        
+
     def resetCurrency(code) {
         synchronized (currencies) {
             currencies.remove(code)
@@ -202,7 +204,7 @@ class ExchangeRateService {
     def source(session, params, test){
         def result
         if (hasPlugin("drilldowns")) {
-            def drilldownService = ((GrailsServiceClass) ApplicationHolder.getApplication().getArtefact(ServiceArtefactHandler.TYPE, "DrilldownService")).newInstance()
+            def drilldownService = ((GrailsServiceClass) ApplicationHolder.getApplication().getArtefact(ServiceArtefactHandler.TYPE, "org.grails.plugins.drilldown.DrilldownService")).newInstance()
             result = drilldownService.source(session, params, test)
         }
 
@@ -284,7 +286,7 @@ class ExchangeRateService {
                 if (cur.save()) {
 
                     // See if a manually added rate exists for today
-                    def fxr = ExchangeRate.find("from ExchangeRate as x where x.currency.id = ? and x.validFrom = ?", [map.id, today])
+                    def fxr = ExchangeRate.find("from org.grails.plugins.exchangerates.ExchangeRate as x where x.currency.id = ? and x.validFrom = ?", [map.id, today])
 
                     // If there is such a record, grab its rate
                     if (fxr) {
@@ -333,7 +335,7 @@ class ExchangeRateService {
         }
 
         if (!value) {
-            def rates = ExchangeRate.findAll("from ExchangeRate as x where x.currency.id = ? and x.validFrom <= ? order by x.validFrom desc", [map.id, date], [max: 1])
+            def rates = ExchangeRate.findAll("from org.grails.plugins.exchangerates.ExchangeRate as x where x.currency.id = ? and x.validFrom <= ? order by x.validFrom desc", [map.id, date], [max: 1])
             if (!rates) return null
             value = rates[0].rate
             addToCache(key, value)

@@ -1,3 +1,7 @@
+package org.grails.plugins.exchangerates
+
+import org.grails.plugins.exchangerates.*
+
 class ExchangeCurrency {
 
     static hasMany = [exchangeRates: ExchangeRate]
@@ -32,7 +36,7 @@ class ExchangeCurrency {
                     obj.lastAutoSucceeded = null
                     return true
                 }
-                
+
                 return ((obj.lastAutoCheck == null && val == null) || (obj.lastAutoCheck != null && val != null))
             })
     }

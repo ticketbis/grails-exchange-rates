@@ -1,3 +1,7 @@
+package org.grails.plugins.exchangerates
+
+import org.grails.plugins.exchangerates.*
+
 class ExchangeRate {
 
     static belongsTo = ExchangeCurrency

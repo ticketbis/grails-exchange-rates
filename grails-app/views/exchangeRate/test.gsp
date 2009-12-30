@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}"><g:message code="home" default="Home" /></a></span>
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/', absolute: true)}"><g:message code="home" default="Home" /></a></span>
             <g:exchangeRateMenuButton/>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="exchangeRate.list" default="Exchange Rate List" /></g:link></span>
         </div>

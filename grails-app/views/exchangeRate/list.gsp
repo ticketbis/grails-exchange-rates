@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}"><g:message code="home" default="Home" /></a></span>
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/', absolute: true)}"><g:message code="home" default="Home" /></a></span>
             <g:exchangeRateMenuButton/>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="exchangeRate.new" default="New Exchange Rate" /></g:link></span>
         </div>
@@ -26,29 +26,29 @@
                 <table>
                     <thead>
                         <tr>
-                        
+
                    	        <g:sortableColumn property="validFrom" title="Valid From" titleKey="exchangeRate.validFrom" />
-                        
+
                    	        <g:sortableColumn property="rate" title="Rate" titleKey="exchangeRate.rate" />
 
                             <g:if test="${!ddExchangeCurrency}">
                                 <th><g:message code="exchangeRate.currency" default="Currency"/></th>
                             </g:if>
-                        
+
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${exchangeRateInstanceList}" status="i" var="exchangeRateInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
+
                             <td><g:link action="show" id="${exchangeRateInstance.id}"><g:formatDate format="yyyy-MM-dd" date="${exchangeRateInstance.validFrom}"/></g:link></td>
-                        
+
                             <td><g:formatNumber number="${exchangeRateInstance.rate}" format="0.000000"/></td>
 
                             <g:if test="${!ddExchangeCurrency}">
                                 <td>${exchangeRateInstance.currency.name}</td>
                             </g:if>
-                        
+
                         </tr>
                     </g:each>
                     </tbody>
