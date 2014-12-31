@@ -5,8 +5,11 @@ import org.codehaus.groovy.grails.commons.GrailsServiceClass
 import org.codehaus.groovy.grails.commons.ServiceArtefactHandler
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.grails.plugins.exchangerates.*
+import org.springframework.transaction.annotation.Transactional
 
 class ExchangeRateService {
+
+    static transactional = false
 
     private static String baseCode
     private static Boolean futureAllowed
@@ -17,8 +20,6 @@ class ExchangeRateService {
     private static long currentCacheSize = 0L
     private static long cacheHits = 0L
     private static long cacheMisses = 0L
-
-    boolean transactional = true
 
     def convertDaily(value, from, to, date = null) {
 
@@ -109,15 +110,17 @@ class ExchangeRateService {
             }
 
             if (ExchangeCurrency.count() == 0) {
-                def list = new CurrencyInitialData().getCurrencies()
-                list.each {
-                    new ExchangeCurrency(it).save()
-                }
+                ExchangeCurrency.withTransaction {
+                    def list = new CurrencyInitialData().getCurrencies()
+                    list.each {
+                        new ExchangeCurrency(it).save()
+                    }
 
-                def cur = ExchangeCurrency.findByCode(baseCode)
-                cur.autoUpdate = false
-                cur.addToExchangeRates(new ExchangeRate([validFrom: fixDate(new Date(0L)), rate: 1.0]))
-                cur.save()
+                    def cur = ExchangeCurrency.findByCode(baseCode)
+                    cur.autoUpdate = false
+                    cur.addToExchangeRates(new ExchangeRate([validFrom: fixDate(new Date(0L)), rate: 1.0]))
+                    cur.save()
+                }
             }
         }
 
@@ -270,54 +273,7 @@ class ExchangeRateService {
 
         // We update today's exchange rate each day that a currency is used (regardless of whether it's todays rate they want)
         if (map.autoUpdate && (map.lastAutoCheck == null || map.lastAutoCheck.before(today))) {
-
-            // Start off by telling other people not to interfere
-            synchronized (currencies) {
-                map.lastAutoCheck = today
-            }
-
-            // Get the currency from the database
-            def cur = ExchangeCurrency.get(map.id)
-
-            // Double check no one has modified it behind our back
-            if (cur && (cur.lastAutoCheck == null || cur.lastAutoCheck.before(today))) {
-                cur.lastAutoCheck = today
-                cur.lastAutoSucceeded = false
-                if (cur.save()) {
-
-                    // See if a manually added rate exists for today
-                    def fxr = ExchangeRate.find("from org.grails.plugins.exchangerates.ExchangeRate as x where x.currency.id = ? and x.validFrom = ?", [map.id, today])
-
-                    // If there is such a record, grab its rate
-                    if (fxr) {
-                        value = fxr.rate
-                    } else {    // Go get today's rate
-                        value = dynamicRate(base, code)
-
-                        // If there is a rate, update the currency and insert the new rate
-                        if (value) {
-                            cur = ExchangeCurrency.get(map.id)
-                            if (cur) {
-                                cur.lastAutoSucceeded = true
-                                cur.addToExchangeRates(new ExchangeRate([validFrom: today, rate: value]))
-                                if (cur.save()) {
-                                    resetThis(code) // Clear the cache for this currency's rates
-                                } else {
-                                    value = null
-                                }
-                            } else {
-                                value = null
-                            }
-                        }
-                    }
-
-                    // If there is a rate, add to the cache since we've got it here
-                    if (value) {
-                        key = "${code}${today.getTime()}"
-                        addToCache(key, value)
-                    }
-                }
-            }
+            updateCurrency(map)
         }
 
         // Now set about getting what they actually asked for
@@ -342,6 +298,57 @@ class ExchangeRateService {
         }
 
         return value
+    }
+
+    @Transactional
+    private updateCurrency(map) {
+        // Start off by telling other people not to interfere
+        synchronized (currencies) {
+            map.lastAutoCheck = today
+        }
+
+        // Get the currency from the database
+        def cur = ExchangeCurrency.get(map.id)
+
+        // Double check no one has modified it behind our back
+        if (cur && (cur.lastAutoCheck == null || cur.lastAutoCheck.before(today))) {
+            cur.lastAutoCheck = today
+            cur.lastAutoSucceeded = false
+            if (cur.save()) {
+
+                // See if a manually added rate exists for today
+                def fxr = ExchangeRate.find("from org.grails.plugins.exchangerates.ExchangeRate as x where x.currency.id = ? and x.validFrom = ?", [map.id, today])
+
+                // If there is such a record, grab its rate
+                if (fxr) {
+                    value = fxr.rate
+                } else {    // Go get today's rate
+                    value = dynamicRate(base, code)
+
+                    // If there is a rate, update the currency and insert the new rate
+                    if (value) {
+                        cur = ExchangeCurrency.get(map.id)
+                        if (cur) {
+                            cur.lastAutoSucceeded = true
+                            cur.addToExchangeRates(new ExchangeRate([validFrom: today, rate: value]))
+                            if (cur.save()) {
+                                resetThis(code) // Clear the cache for this currency's rates
+                            } else {
+                                value = null
+                            }
+                        } else {
+                            value = null
+                        }
+                    }
+                }
+
+                // If there is a rate, add to the cache since we've got it here
+                if (value) {
+                    key = "${code}${today.getTime()}"
+                    addToCache(key, value)
+                }
+            }
+        }
     }
 
     private addToCache(code, value) {
