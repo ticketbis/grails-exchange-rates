@@ -1,8 +1,7 @@
 class ExchangeRatesGrailsPlugin {
-    def version = 1.8
+    def version = "1.9.0"
     def dependsOn = [:]
 
-    // TODO Fill in these fields
     def author = "Paul Fernley"
     def authorEmail = "paul@pfernley.orangehome.co.uk"
     def title = "Foreign currency exchange rates using Yahoo!"
