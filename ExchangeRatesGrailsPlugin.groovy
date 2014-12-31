@@ -21,20 +21,20 @@ have Internet access for the exchange-rates plugin to function.
     // URL to the plugin's documentation
     def documentation = "http://grails.org/ExchangeRates+Plugin"
 
+    def doWithWebDescriptor = { xml ->
+        // TODO Implement additions to web.xml (optional), this event occurs before
+    }
+
     def doWithSpring = {
         // TODO Implement runtime spring config (optional)
     }
 
-    def doWithApplicationContext = { applicationContext ->
-        // TODO Implement post initialization spring config (optional)
-    }
-
-    def doWithWebDescriptor = { xml ->
-        // TODO Implement additions to web.xml (optional)
-    }
-
     def doWithDynamicMethods = { ctx ->
         // TODO Implement registering dynamic methods to classes (optional)
+    }
+
+    def doWithApplicationContext = { ctx ->
+        // TODO Implement post initialization spring config (optional)
     }
 
     def onChange = { event ->
@@ -46,5 +46,9 @@ have Internet access for the exchange-rates plugin to function.
     def onConfigChange = { event ->
         // TODO Implement code that is executed when the project configuration changes.
         // The event is the same as for 'onChange'.
+    }
+
+    def onShutdown = { event ->
+        // TODO Implement code that is executed when the application shuts down (optional)
     }
 }
