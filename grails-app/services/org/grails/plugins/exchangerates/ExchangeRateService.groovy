@@ -258,9 +258,6 @@ class ExchangeRateService {
 
     private getRate(code, date) {
 
-        // Ensure the system is initialized and note the base currency
-        def base = baseCurrencyCode()
-
         // Ensure the currency definition is in the currencies map
         def map = getCurrency(code)
         if (!map) return null
@@ -273,7 +270,7 @@ class ExchangeRateService {
 
         // We update today's exchange rate each day that a currency is used (regardless of whether it's todays rate they want)
         if (map.autoUpdate && (map.lastAutoCheck == null || map.lastAutoCheck.before(today))) {
-            updateCurrency(map)
+            updateCurrency(code, map)
         }
 
         // Now set about getting what they actually asked for
@@ -301,7 +298,12 @@ class ExchangeRateService {
     }
 
     @Transactional
-    private updateCurrency(map) {
+    private updateCurrency(code, map) {
+        // Ensure the system is initialized and note the base currency
+        def base = baseCurrencyCode()
+
+        def today = fixDate(new Date())
+
         // Start off by telling other people not to interfere
         synchronized (currencies) {
             map.lastAutoCheck = today
@@ -315,6 +317,7 @@ class ExchangeRateService {
             cur.lastAutoCheck = today
             cur.lastAutoSucceeded = false
             if (cur.save()) {
+                def value
 
                 // See if a manually added rate exists for today
                 def fxr = ExchangeRate.find("from org.grails.plugins.exchangerates.ExchangeRate as x where x.currency.id = ? and x.validFrom = ?", [map.id, today])
@@ -344,7 +347,7 @@ class ExchangeRateService {
 
                 // If there is a rate, add to the cache since we've got it here
                 if (value) {
-                    key = "${code}${today.getTime()}"
+                    def key = "${code}${today.getTime()}"
                     addToCache(key, value)
                 }
             }
