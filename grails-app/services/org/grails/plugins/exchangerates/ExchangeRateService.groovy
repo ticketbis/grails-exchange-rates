@@ -1,15 +1,14 @@
 package org.grails.plugins.exchangerates
 
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.codehaus.groovy.grails.commons.GrailsServiceClass
 import org.codehaus.groovy.grails.commons.ServiceArtefactHandler
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.grails.plugins.exchangerates.*
 import org.springframework.transaction.annotation.Transactional
 
 class ExchangeRateService {
 
     static transactional = false
+
+    def grailsApplication
 
     private static String baseCode
     private static Boolean futureAllowed
@@ -90,21 +89,21 @@ class ExchangeRateService {
 
     def baseCurrencyCode() {
         if (!baseCode) {
-            def val = ConfigurationHolder.config.exchangeRates.baseCurrencyCode
+            def val = grailsApplication.config.exchangeRates.baseCurrencyCode
             if (val && val instanceof String && val ==~ /[A-Z][A-Z][A-Z]/) {
                 baseCode = val
             } else {
                 baseCode = "USD"
             }
 
-            val = ConfigurationHolder.config.exchangeRates.future.rates
+            val = grailsApplication.config.exchangeRates.future.rates
             if (val != null && val instanceof Boolean) {
                 futureAllowed = val
             } else {
                 futureAllowed = true
             }
 
-            def size = ConfigurationHolder.config.exchangeRates.cache.size.kb
+            def size = grailsApplication.config.exchangeRates.cache.size.kb
             if (size != null && size instanceof Integer && size >= 0 && size <= 1024 * 1024) {
                 maxCacheSize = size * 1024L
             }
@@ -207,7 +206,7 @@ class ExchangeRateService {
     def source(session, params, test){
         def result
         if (hasPlugin("drilldowns")) {
-            def drilldownService = ((GrailsServiceClass) ApplicationHolder.getApplication().getArtefact(ServiceArtefactHandler.TYPE, "org.grails.plugins.drilldown.DrilldownService")).newInstance()
+            def drilldownService = ((GrailsServiceClass) grailsApplication.getArtefact(ServiceArtefactHandler.TYPE, "org.grails.plugins.drilldown.DrilldownService")).newInstance()
             result = drilldownService.source(session, params, test)
         }
 
