@@ -1,5 +1,5 @@
 class ExchangeRatesGrailsPlugin {
-    def version = "1.9.0"
+    def version = "1.9.1"
     def dependsOn = [:]
 
     def author = "Paul Fernley"

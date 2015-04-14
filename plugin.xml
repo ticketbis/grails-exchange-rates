@@ -1,4 +1,4 @@
-<plugin name='exchange-rates' version='1.9.0' grailsVersion='2.3.8 &gt; *'>
+<plugin name='exchange-rates' version='1.9.1' grailsVersion='2.3.8 &gt; *'>
   <author>Paul Fernley</author>
   <authorEmail>paul@pfernley.orangehome.co.uk</authorEmail>
   <title>Foreign currency exchange rates using Yahoo!</title>
