@@ -9,7 +9,3 @@
 //
 
 Ant.property(environment:"env")
-grailsHome = Ant.antProject.properties."env.GRAILS_HOME"
-Ant.copy(file:"${pluginBasedir}/grails-app/i18n/exchange-rates.properties", todir:"${basedir}/grails-app/i18n")
-Ant.copy(file:"${pluginBasedir}/web-app/images/false.png", todir:"${basedir}/web-app/images")
-Ant.copy(file:"${pluginBasedir}/web-app/images/true.png", todir:"${basedir}/web-app/images")

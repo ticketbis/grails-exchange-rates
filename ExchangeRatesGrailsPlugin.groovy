@@ -1,6 +1,9 @@
 class ExchangeRatesGrailsPlugin {
-    def version = "1.9.1"
+    def version = "1.9.2"
     def dependsOn = [:]
+
+    // the version or versions of Grails the plugin is designed for
+    def grailsVersion = "2.3 > *"
 
     def author = "Paul Fernley"
     def authorEmail = "paul@pfernley.orangehome.co.uk"
