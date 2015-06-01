@@ -1,5 +1,6 @@
 class ExchangeRatesGrailsPlugin {
     def version = "1.9.2"
+    def groupId = "com.ticketbis"
     def dependsOn = [:]
 
     // the version or versions of Grails the plugin is designed for
