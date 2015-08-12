@@ -43,7 +43,7 @@ class ExchangeRateService {
         if (!date) date = new Date()
 
         // Ensure the date has no time portion
-        fixDate(date)
+        date = fixDate(date)
 
         // Grab the exchange rates involved
         def fromRate = getRate(from, date)
