@@ -1,5 +1,5 @@
 class ExchangeRatesGrailsPlugin {
-    def version = "1.9.2"
+    def version = "1.9.3"
     def groupId = "com.ticketbis"
     def dependsOn = [:]
 
