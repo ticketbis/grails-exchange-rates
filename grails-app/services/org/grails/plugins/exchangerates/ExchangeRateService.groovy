@@ -78,7 +78,7 @@ class ExchangeRateService {
             return 1.0
         }
 
-        def result = "http://finance.yahoo.com/d/quotes.csv?s=${from}${to}=X&f=b".toURL().getText()?.trim()
+        def result = "http://download.finance.yahoo.com/d/quotes.csv?s=${from}${to}=X&f=b".toURL().getText()?.trim()
 
         try {
             return round(new BigDecimal(result), 6)
